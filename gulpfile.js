@@ -4,6 +4,7 @@ var ts = require('gulp-typescript');
 var jsonTransform = require('gulp-json-transform');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
+var browserify = require('gulp-browserify');
 
 var argv = require('yargs').argv;
 var shell = require('shelljs');
@@ -11,14 +12,14 @@ var shell = require('shelljs');
 var projectDir = argv.projectDir;
 var projectDist = argv.projectDir + '/dist';
 var projectSrc = argv.projectDir + '/src';
-var exkitDir = projectDist + '/exkit';
+var projectExkitDir = projectDist + '/exkit';
 
 var target = argv.target;
 
-var transformJson = function(transformer, platform) {
+var transformJson = function(transformer, outputName) {
     return gulp.src(projectDir+'/exkit.json')
-        .pipe(jsonTransform(transformer))
-        .pipe(concat('package.json'))
+        .pipe(jsonTransform(transformer, 2))
+        .pipe(concat(outputName))
         .pipe(gulp.dest(projectDist));
 };
 
@@ -39,7 +40,7 @@ gulp.task('firefox', ['compile'], function() {
             };
         }))
         .pipe(concat('config.json'))
-        .pipe(gulp.dest(exkitDir));
+        .pipe(gulp.dest(projectExkitDir));
 
     // Copy all files that are referenced by content scripts into data folder
     var config = require(projectDir + '/exkit.json');
@@ -50,7 +51,7 @@ gulp.task('firefox', ['compile'], function() {
     });
 
     // Also move helper into data dir
-    gulp.src(exkitDir + '/dom/helper.js').pipe(concat('helper.js')).pipe(gulp.dest(projectDist+'/data/exkit/dom'));
+    gulp.src(projectExkitDir + '/dom/helper.js').pipe(concat('helper.js')).pipe(gulp.dest(projectDist+'/data/exkit/dom'));
 
     return transformJson(function (data) {
         return {
@@ -59,13 +60,39 @@ gulp.task('firefox', ['compile'], function() {
             "version": data["version"],
             "description": data["description"]
         };
-    });
+    }, "package.json");
 });
 
 gulp.task('chrome', ['compile'], function() {
-    return transformJson(function (data) {
-        return data;
-    });
+    transformJson(function (data) {
+        var cs = data["content_scripts"].map(function(el) {
+            el["files"].unshift("exkit/dom/helper.js");
+
+            return {
+                "matches": el["matches"]["chrome"],
+                "js": el["files"],
+                "run_at": "document_end"
+            };
+        });
+
+        return {
+            "name": data["name"],
+            "version": data["version"],
+            "description": data["description"],
+            "homepage_url": data["homepage_url"],
+            "manifest_version": 2,
+            "background": {
+                "scripts": ["main.js"]
+            },
+            "content_scripts": cs
+        };
+    }, "manifest.json");
+
+    return gulp.src(projectDist + '/main.js')
+        .pipe(browserify({
+            insertGlobals: true
+        }))
+        .pipe(gulp.dest(projectDist));
 });
 
 gulp.task('opera', ['compile'], function() {
@@ -77,7 +104,7 @@ gulp.task('opera', ['compile'], function() {
 gulp.task('compile', ['clean'], function() {
     return gulp.src('src/'+target+'/**/*.js')
         .pipe(babel())
-        .pipe(gulp.dest(exkitDir));
+        .pipe(gulp.dest(projectExkitDir));
 });
 
 gulp.task('user-compile', ['clean'], function() {
