@@ -5,12 +5,10 @@ var helper = {
         };
 
         if (typeof addon !== 'undefined') {
-            console.info("addon is defined");
             portVar = addon.port;
         }
 
         if (typeof self.port !== 'undefined') {
-            console.info("self.port is defined");
             portVar = self.port;
         }
 
@@ -19,11 +17,12 @@ var helper = {
             return v.toString(16);
         });
 
+
         // use the eventId to identify this event later on
-        portVar.port.on(eventId, callback);
+        portVar.on(eventId, callback);
 
         // Fire event to backend
-        portVar.port.emit("cs-event", {
+        portVar.emit("cs-event", {
             eventId: eventId,
             eventName: name,
             payload: payload

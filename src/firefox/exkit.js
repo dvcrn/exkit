@@ -12,15 +12,12 @@ var exkit = {
                 return self.data.url(path);
             });
 
-
             pageMod.PageMod({
                 include: contentScript["matches"]["firefox"],
                 contentScriptFile: files,
-                onAttach: (port) => event._handlePort(port)
+                onAttach: (worker) => event._handlePort(worker.port)
             });
         }
-
-        console.info(config);
     }
 };
 
