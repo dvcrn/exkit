@@ -28,9 +28,11 @@ var build = function (target) {
 var init = function() {
     if (!process.argv[3]) {
         console.error("no target dir set.");
+        return;
     }
 
     console.info("Initializing exkit... Hold on a sec");
+    console.info("Not yet implemented");
 
 };
 
@@ -50,7 +52,11 @@ case "init":
     init();
     break;
 default:
-    console.info("command not found");
+    console.info("command not found. Available options are");
+    console.info("init  -- initializes new exkit project and loads boilerplate");
+    console.info("build -- compiles exkit project into browser extensions.");
+    console.info("         The first parameter defines the target. Options are 'firefox', 'opera' and 'chrome'");
+    console.info("         If no target is set, exkit will compile for all platforms");
 }
 
 shell.cd(projectDir);
