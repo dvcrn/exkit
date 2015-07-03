@@ -15,8 +15,14 @@ var build = function (target) {
         console.error("Target '"+target+"' does not exist.");
     }
 
+    var outputDir = projectDir+"/dist/"+target;
+
     prepare();
-    shell.exec("gulp build --target="+target+" --project-dir="+projectDir);
+    shell.echo("Compiling exkit for "+target+"... just a sec! (output: '"+outputDir+"')");
+    shell.exec("gulp build --silent --target="+target+" --project-dir="+projectDir+" --output-dir="+outputDir);
+    shell.cd(projectDir);
+    shell.echo(target+" finished");
+    shell.echo("");
 };
 
 var init = function() {

@@ -10,7 +10,7 @@ var argv = require('yargs').argv;
 var shell = require('shelljs');
 
 var projectDir = argv.projectDir;
-var projectDist = argv.projectDir + '/dist';
+var projectDist = argv.outputDir;
 var projectSrc = argv.projectDir + '/src';
 var projectExkitDir = projectDist + '/exkit';
 
@@ -53,7 +53,7 @@ gulp.task('firefox', ['compile'], function() {
     // Also move helper into data dir
     gulp.src(projectExkitDir + '/dom/helper.js').pipe(concat('helper.js')).pipe(gulp.dest(projectDist+'/data/exkit/dom'));
 
-    return transformJson(function (data) {
+    transformJson(function (data) {
         return {
             "name": data["name_clean"],
             "id": data["id"],
@@ -61,6 +61,7 @@ gulp.task('firefox', ['compile'], function() {
             "description": data["description"]
         };
     }, "package.json");
+
 });
 
 gulp.task('chrome', ['compile'], function() {
@@ -88,17 +89,15 @@ gulp.task('chrome', ['compile'], function() {
         };
     }, "manifest.json");
 
-    return gulp.src(projectDist + '/main.js')
+    gulp.src(projectDist + '/main.js')
         .pipe(browserify({
             insertGlobals: true
         }))
         .pipe(gulp.dest(projectDist));
+
 });
 
-gulp.task('opera', ['compile'], function() {
-    return transformJson(function (data) {
-        return data;
-    });
+gulp.task('opera', ['compile', 'chrome'], function() {
 });
 
 gulp.task('compile', ['clean'], function() {
