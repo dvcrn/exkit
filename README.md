@@ -2,7 +2,7 @@
 
 # Introduction
 
-Exkit (__Ex__tension__Kit__) is a framework for creating modern, javascript based cross browser extensions. Write your extension once and compile it for opera, chrome and safari at the same time - without any extra effort!
+Exkit (__Ex__tension __Kit__) is a framework for creating modern, javascript based cross browser extensions. Write your extension once and compile it for opera, chrome and safari at the same time - without any extra effort!
 
 Exkit is built on top of gulp and babel to give you the newest es6 features right at your finger tips. 
 
