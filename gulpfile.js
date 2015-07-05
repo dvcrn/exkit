@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
-var ts = require('gulp-typescript');
 var jsonTransform = require('gulp-json-transform');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
