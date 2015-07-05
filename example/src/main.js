@@ -2,6 +2,8 @@ var browser = require('./exkit/browser');
 var exkit = require('./exkit/exkit');
 var event = require('./exkit/event');
 
+console.info("Welcome to ExKit!");
+
 // Make sure to keep this line in to let exkit init it's stuff
 exkit.init();
 
@@ -14,3 +16,4 @@ event.bind("exkit-button-clicked", function() {
     console.info("you clicked the button!!!!");
 });
 
+browser.createTab("http://google.com");

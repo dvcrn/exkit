@@ -3,6 +3,7 @@ var shell = require("shelljs");
 var targets = ['firefox', 'opera', 'chrome'];
 var projectDir = shell.pwd();
 var exkitDir = "node_modules/exkit";
+var path = require('path');
 
 var prepare = function() {
     if (shell.pwd() !== exkitDir) {
@@ -31,9 +32,16 @@ var init = function() {
         return;
     }
 
-    console.info("Initializing exkit... Hold on a sec");
-    console.info("Not yet implemented");
+    var target = process.argv[3];
+    var source = path.resolve(__dirname, '..', 'example');
 
+    console.info("Initializing exkit in "+target+"... Hold on a sec");
+
+    shell.cp("-r", source+'/*', target);
+    shell.cd(target);
+    shell.exec("npm install");
+
+    console.info("Done! Run 'exkit build' to get started");
 };
 
 // 2nd argument is command
