@@ -1,0 +1,9 @@
+{
+  "name": "exkit-project",
+  "version": "0.0.1",
+  "description": "This is my super cool extension!",
+  "dependencies": {
+    "exkit": "0.0.1"
+  },
+  "author": ""
+}

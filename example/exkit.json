@@ -1,0 +1,32 @@
+{
+  "name": "Exkit Project",
+  "name_clean": "exkit-extension",
+  "id": "exkit",
+  "version": "1.0.0",
+  "homepage_url": "https://github.com/dvcrn/exkit",
+  "content_scripts": [
+    {
+      "matches": {
+        "chrome": ["*://www.google.com/*"],
+        "firefox": ["*.google.com"]
+      },
+      "files": [
+        "page-worker/google.js"
+          ],
+          "run_at": "document_end"
+    }
+  ],
+  "opera": {
+    "foo": "opera"
+  },
+  "chrome": {
+    "foo": "chrome"
+  },
+  "firefox": {
+    "foo": "firefox"
+  },
+  "browser_action": {
+    "default_title": "Click to do something amazing",
+    "default_icon": "resources/images/icon128.png"
+  }
+}
