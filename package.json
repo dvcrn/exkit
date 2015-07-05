@@ -1,7 +1,7 @@
 {
   "name": "exkit",
   "version": "0.0.1",
-  "description": "ExKit code",
+  "description": "framework for creating chrome, firefox and opera extensions",
   "main": "gulpfile.js",
   "dependencies": {
     "gulp": "^3.9.0",
@@ -19,6 +19,6 @@
   "bin": {
     "exkit": "bin/exkit.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "David Mohl",
+  "license": "Artistic-2.0"
 }
