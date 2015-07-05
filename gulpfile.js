@@ -36,7 +36,8 @@ gulp.task('firefox', ['compile'], function() {
                 return el;
             });
             return {
-                "content_scripts": data['content_scripts']
+                "content_scripts": data['content_scripts'],
+                "browser_action": data['browser_action']
             };
         }))
         .pipe(concat('config.json'))
@@ -52,6 +53,9 @@ gulp.task('firefox', ['compile'], function() {
 
     // Also move helper into data dir
     gulp.src(projectExkitDir + '/dom/helper.js').pipe(concat('helper.js')).pipe(gulp.dest(projectDist+'/data/exkit/dom'));
+
+    // Move all ressources into data
+    gulp.src(projectDir+'/resources/**/*').pipe(gulp.dest(projectDist+'/data/resources'));
 
     transformJson(function (data) {
         return {
@@ -85,16 +89,19 @@ gulp.task('chrome', ['compile'], function() {
             "background": {
                 "scripts": ["main.js"]
             },
-            "content_scripts": cs
+            "content_scripts": cs,
+            "browser_action": data["browser_action"]
         };
     }, "manifest.json");
+
+    // Move all ressources into dist
+    gulp.src(projectDir+'/resources/**/*').pipe(gulp.dest(projectDist+'/resources'));
 
     gulp.src(projectDist + '/main.js')
         .pipe(browserify({
             insertGlobals: true
         }))
         .pipe(gulp.dest(projectDist));
-
 });
 
 gulp.task('opera', ['compile', 'chrome'], function() {

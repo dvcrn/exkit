@@ -9,6 +9,10 @@ var event = {
                     });
                 }
             });
+
+            chrome.browserAction.onClicked.addListener(function () {
+                _this.fire("exkit-button-clicked");
+            });
         })(this);
     },
     bind: function(name, callback) {
