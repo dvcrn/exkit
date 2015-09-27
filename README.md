@@ -44,3 +44,7 @@ event is a global event system built on top of the browsers event system. Event 
 # Future
 
 Pull requests welcome!
+
+# License
+
+GPLv3
